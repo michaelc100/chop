@@ -42,6 +42,9 @@ function [c,options] = chop(x,options)
 %   default is used.
 %   The options structure is stored internally in a persistent variable
 %   and can be obtained with [~,options] = CHOP.
+%   Modifications by MPC on 08/07/19: 
+%   - options.accum specifies which precision we accumulate our result to 
+%     in stochastic rounding
 
 % References:
 % [1] IEEE Standard for Floating-Point Arithmetic, IEEE Std 754-2008 (revision 
@@ -86,6 +89,11 @@ elseif nargin == 2 && ~isempty(options)
        fpopts.p = options.p;
     else    
         fpopts.p = 0.5;
+    end    
+    if isfield(options, 'accum') && ~isempty(options.accum)
+        fpopts.accum = options.accum;
+    else
+        fpopts.accum = 0;
     end    
 end
 
