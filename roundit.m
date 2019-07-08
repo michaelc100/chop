@@ -30,6 +30,7 @@ if ~isfield(options,'round'), options.round = 1; end
 if ~isfield(options,'flip'), options.flip = 0; end
 if ~isfield(options,'p'), options.p = 0.5; end
 if ~isfield(options, 'accum'), options.accum = 0; end
+if ~isfield(options, 'aparams'), options.aparams = 0; end
 
 mysign = @(x) sign(x) + (x==0); % mysign(0) = 1;
 
@@ -61,14 +62,18 @@ switch options.round
     if options.accum
         %We have a target precision to accumulate to
         % Want to round frac to that, as well as all generated rands
-        fp_.format = options.accum;
+        fp.format = options.accum;
+        if options.aparams
+            fp.params = options.aparams;
+        end
+        
         y = abs(x); 
-        frac = chop(y - floor(y), fp_);
+        frac = chop(y - floor(y), fp);
         k = find(frac ~= 0);
         if isempty(k)
             y = x; 
         else   
-            rnd = chop(rand(length(k),1), fp_);
+            rnd = chop(rand(length(k),1), fp);
             vals = frac(k);  vals = vals(:);
 
             switch options.round

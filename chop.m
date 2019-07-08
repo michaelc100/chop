@@ -95,6 +95,9 @@ elseif nargin == 2 && ~isempty(options)
     else
         fpopts.accum = 0;
     end    
+    if isfield(options, 'aparams') && ~isempty(options.aparams)
+        fpopts.aparams = options.aparams;
+    end    
 end
 
 if ismember(fpopts.format, {'h','half','fp16','b','bfloat16','s', ...
